@@ -17,6 +17,7 @@ public class PersonController {
     @Autowired
     ExampleService service;
 
+
     @GetMapping
     public List<Person> getPersons() {
         log.info("Getting all Persons.");
@@ -26,6 +27,7 @@ public class PersonController {
     @PostMapping
     public Person create(@RequestBody Person person) {
         String msg = "Creating person:" + person.toString();
+
         log.info(msg);
         return service.addPerson(person);
     }
