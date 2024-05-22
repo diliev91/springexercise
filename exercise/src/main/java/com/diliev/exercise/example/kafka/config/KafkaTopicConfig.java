@@ -1,4 +1,4 @@
-package com.diliev.exercise;
+package com.diliev.exercise.example.kafka.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

@@ -1,7 +1,5 @@
-package com.diliev.exercise;
+package com.diliev.exercise.example.kafka.config;
 
-import com.diliev.exercise.example.entity.Person;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +8,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 
 import java.util.Map;
@@ -28,14 +25,14 @@ public class KafkaConsumerConfig {
 
 
     @Bean
-    public ConsumerFactory<String, Person> consumerFactory() {
+    public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapAddress);
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
-                "1");
+                "group_id");
         props.put(
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 JsonDeserializer.class);
@@ -49,9 +46,9 @@ public class KafkaConsumerConfig {
 
     @Bean
 
-    public ConcurrentKafkaListenerContainerFactory<String, Person>
+    public ConcurrentKafkaListenerContainerFactory<String, String>
     kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Person> factory =
+        ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

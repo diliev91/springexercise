@@ -1,6 +1,7 @@
 package com.diliev.exercise.example.service;
 
 import com.diliev.exercise.example.entity.Person;
+import com.diliev.exercise.example.kafka.producer.MessageProducer;
 import com.diliev.exercise.example.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +16,24 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class ExampleService {
-    @Autowired
-    PersonRepository personRepo;
+    private final PersonRepository personRepo;
+    private final MessageProducer messageProducer;
 
-    @Value(value = "${kafka.topic}")
-    private String kafkaTopic;
     @Autowired
-    private KafkaTemplate<String, Person> kafkaTemplate;
-
-    public void sendMessage(Person p) {
-        kafkaTemplate.send(kafkaTopic, p);
+    public ExampleService(PersonRepository personRepo, MessageProducer messageProducer) {
+        this.personRepo = personRepo;
+        this.messageProducer = messageProducer;
     }
-    @KafkaListener(topics = "${kafka.topic}", groupId = "1")
+
+
+
+    @KafkaListener(topics = "${kafka.topic}", groupId = "group_id")
     public void topicListener(Person p) {
        log.info("Received Message in group foo: " + p);
         personRepo.save(p);
     }
 
     public Person addPerson(Person person) {
-        this.sendMessage(person);
         return personRepo.save(person);
     }
 

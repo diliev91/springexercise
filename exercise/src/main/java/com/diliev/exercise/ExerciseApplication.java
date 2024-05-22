@@ -20,3 +20,4 @@ public class ExerciseApplication {
 		log.info("Spring application started.");
 	}
 }
+
